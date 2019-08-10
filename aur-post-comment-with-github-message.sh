@@ -28,8 +28,9 @@ message="$(eval echo $_message_eval_template)"
   curl -s -c /tmp/aur_cookie.txt 'https://aur.archlinux.org/login' -d "user=${aur_username}&passwd=$pass" >/dev/null
 }
 
-# get post token by probing comment FORM
+# get post token/ID by probing comment FORM
 token=$(eval ${_curl}|grep -Po 'name="token" value="\K[a-z0-9]*'|head -n1)
+ID=$(eval ${_curl}|grep -Po 'name="ID" value="\K[a-z0-9]*'|head -n1)
 # post a comment
 eval ${_curl_post_comment}
 # get $comment_id
