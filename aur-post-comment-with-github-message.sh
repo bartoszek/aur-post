@@ -4,7 +4,13 @@
 # config
 aur_username="bartus"
 github_username="bartoszek"
-_message_eval_template='Please+report+%60issues%60+and+%60patches%60+to+%5B${pkgname}%40github.com%5D%28https%3A%2F%2Fgithub.com%2F${github_username}%2FAUR-${pkgname}%29'
+_message_eval_template='
+# This package is also hosted on GitHub.
+
+* Please report \`issues\` and \`patches\` to [${pkgname}*github.com](https://github.com/${github_username}/AUR-${pkgname})
+
+* Travis CI Status: [![Build Status](https://travis-ci.org/${github_username}/AUR-${pkgname}.svg?branch=master)](https://travis-ci.org/${github_username}/AUR-${pkgname})
+'
 
 #trap 'rm /tmp/aur_cookie.txt' EXIT
 
@@ -12,14 +18,14 @@ _message_eval_template='Please+report+%60issues%60+and+%60patches%60+to+%5B${pkg
 #  define evals for `curl`
 _curl='curl -s -b /tmp/aur_cookie.txt "https://aur.archlinux.org/pkgbase/${pkgname}/"'
 # post comment needs: token, comment, ID ( can be anything, AUR isn't chacking it )
-_curl_post_comment=$_curl' -d "action=do_AddComment&ID=141089&token=${token}&comment=${message}"'
+_curl_post_comment=$_curl' -d "action=do_AddComment&ID=${ID}&token=${token}" --data-urlencode "comment=${message}"'
 # pin comment needs: token, comment_id
 _curl_pin_comment=$_curl' -d "action=do_PinComment&comment_id=${comment_id}&token=${token}"'
 
 # message base on PKGBUILD
 [ ! -f PKGBUILD ] && { echo "PKGBUILD missing, run $(basename "$0") inside package folder" >&2; exit 1;}
 pkgname=$(. PKGBUILD; echo $pkgname)
-message="$(eval echo $_message_eval_template)"
+message="$(eval echo "\"$_message_eval_template\"")"
 
 # check if cookie.txt exist
 # get cookie with: curl -c cookie.txt -d "user=" -d "password=" https://aur.archlinux.org/login
