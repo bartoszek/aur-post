@@ -33,7 +33,7 @@ token=$(eval ${_curl}|grep -Po 'name="token" value="\K[a-z0-9]*'|head -n1)
 ID=$(eval ${_curl}|grep -Po 'name="ID" value="\K[a-z0-9]*'|head -n1)
 # post a comment
 eval ${_curl_post_comment}
-# get $comment_id
-comment_id=$(eval ${_curl}|grep -Po 'name="comment_id" value="\K[0-9]*'|head -n1)
+# get $comment_id (latest comment_id will be last in the numerical order)
+comment_id=$(eval ${_curl}|grep -Po 'name="comment_id" value="\K[0-9]*'|sort -n|tail -n1)
 # ping comment base on $comment_id
 eval ${_curl_pin_comment}
