@@ -2,8 +2,8 @@
 #wip: probe for ID alongside $token
 
 # config
-aur_username="bartus"
-github_username="bartoszek"
+aur_username="${username:-bartus}"
+github_username="${github_username:-bartoszek}"
 _message_eval_template='
 # This package is also hosted on GitHub.
 
@@ -25,7 +25,7 @@ _curl_pin_comment=$_curl' -d "action=do_PinComment&comment_id=${comment_id}&toke
 # message base on PKGBUILD
 [ ! -f PKGBUILD ] && { echo "PKGBUILD missing, run $(basename "$0") inside package folder" >&2; exit 1;}
 pkgname=$(. PKGBUILD; echo $pkgname)
-message="$(eval echo "\"$_message_eval_template\"")"
+[[ ! -v message ]] && message="$(eval echo "\"$_message_eval_template\"")"
 
 # check if cookie.txt exist
 # get cookie with: curl -c cookie.txt -d "user=" -d "password=" https://aur.archlinux.org/login
