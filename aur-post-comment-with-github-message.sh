@@ -40,6 +40,6 @@ pkgname=$(. PKGBUILD; echo $pkgname)
 # post a comment
 eval ${_curl_post_comment}
 # get $comment_id (latest comment_id will be last in the numerical order)
-comment_id=$(eval ${_curl}|grep -Po 'name="comment_id" value="\K[0-9]*'|sort -n|tail -n1)
+comment_id=$(eval ${_curl}|grep -Po 'comments/\K[0-9]*(?=\/pin)'|sort -n|tail -n1)
 # ping comment base on $comment_id
 eval ${_curl_pin_comment}
