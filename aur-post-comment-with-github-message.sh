@@ -16,7 +16,7 @@ _message_eval_template='
 
 
 #  define evals for `curl`
-_curl='curl -s -b /tmp/aur_cookie.txt "https://aur.archlinux.org/pkgbase/${pkgname}/"'
+_curl='curl -L -s -b /tmp/aur_cookie.txt "https://aur.archlinux.org/pkgbase/${pkgname}/"'
 # post comment needs: token, comment, ID ( can be anything, AUR isn't chacking it )
 _curl_post_comment=$_curl' -d "action=do_AddComment&ID=${ID}&token=${token}" --data-urlencode "comment=${message}"'
 # pin comment needs: token, comment_id
