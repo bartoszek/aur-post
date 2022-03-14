@@ -21,7 +21,8 @@ _curl='curl -L -s -b /tmp/aur_cookie.txt "https://aur.archlinux.org/pkgbase/${pk
 #_curl_post_comment=$_curl' -d "action=do_AddComment&ID=${ID}&token=${token}" --data-urlencode "comment=${message}"'
 _curl_post_comment='curl -b /tmp/aur_cookie.txt "https://aur.archlinux.org/pkgbase/${pkgname}/comments" --data-urlencode "comment=${message}"'
 # pin comment needs: token, comment_id
-_curl_pin_comment=$_curl' -d "action=do_PinComment&comment_id=${comment_id}&token=${token}"'
+#_curl_pin_comment=$_curl' -d "action=do_PinComment&comment_id=${comment_id}&token=${token}"'
+_curl_pin_comment='curl -b /tmp/aur_cookie.txt "https://aur.archlinux.org/pkgbase/${pkgname}/comments/${comment_id}/pin" --data-raw "submit.x=4&submit.y=7"'
 
 # message base on PKGBUILD
 [ ! -f PKGBUILD ] && { echo "PKGBUILD missing, run $(basename "$0") inside package folder" >&2; exit 1;}
